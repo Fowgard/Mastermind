@@ -131,9 +131,20 @@ class Game
 	end
 
 
-	def computer_turn()
-		puts "enter 0 for correct position and color, 1 for correct color, and 2 for incorrect"
-		
+	def new_guess(code_guess, feed)
+		4.times do |i|
+			if feed[i] == "0"	
+				next
+			else
+				new_color = @colors[rand(6)]
+					if new_color == code_guess[i]
+						redo
+					end
+				code_guess[i] = new_color 
+			end
+		end
+		return code_guess
+
 	end
 
 
@@ -145,9 +156,17 @@ class Game
 		input.downcase!
 
 		if input =~ /[r|g|y|b|m|c]{4}/i  && input.length == 4
+			code_guess = []
+
+			4.times do
+				code_guess.push(@colors[rand(6)])
+			end
 			12.times do
 				puts "Your code is #{input}"
-				computer_turn()
+				puts "Computers guess is #{code_guess.join("")}"
+				puts "enter 0 for correct position and color, 1 for correct color, and 2 for incorrect"
+				feed = gets.chomp
+				code_guess = new_guess(code_guess, feed)
 			end
 
 		else
